@@ -101,8 +101,17 @@ const questions = [
     }
   ];
   
+  // Shuffle function to randomize the order of questions
+function shuffle(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [array[i], array[j]] = [array[j], array[i]];
+    }
+  }
+  
   let currentQuestion = 0;
   let score = 0;
+  let shuffledQuestions = [];
   
   const quizContainer = document.getElementById("quiz-container");
   const resultContainer = document.getElementById("result-container");
@@ -112,15 +121,20 @@ const questions = [
   const scoreElement = document.getElementById("score");
   const nextButton = document.getElementById("next-button");
   const startButton = document.getElementById("start-button");
+  const resetButton = document.getElementById("reset-button");
   
   function startQuiz() {
     startButton.style.display = "none";
+    resetButton.style.display = "none";
     quizContainer.style.display = "block";
+    // Shuffle the questions
+    shuffledQuestions = [...questions];
+    shuffle(shuffledQuestions);
     showQuestion();
   }
   
   function showQuestion() {
-    const question = questions[currentQuestion];
+    const question = shuffledQuestions[currentQuestion];
     questionElement.textContent = question.question;
   
     optionsContainer.innerHTML = "";
@@ -145,7 +159,7 @@ const questions = [
     nextButton.textContent = "Next";
     nextButton.disabled = true;
     nextButton.style.display = "block";
-    if (currentQuestion === questions.length - 1) {
+    if (currentQuestion === shuffledQuestions.length - 1) {
       nextButton.textContent = "Submit";
     }
   }
@@ -161,7 +175,7 @@ const questions = [
     }
   
     const selectedOptionIndex = parseInt(selectedOption.value);
-    const question = questions[currentQuestion];
+    const question = shuffledQuestions[currentQuestion];
     if (selectedOptionIndex === question.answer) {
       score++;
       showAnswerFeedback(true);
@@ -169,7 +183,7 @@ const questions = [
       showAnswerFeedback(false, question.options[question.answer]);
     }
   
-    if (currentQuestion === questions.length - 1) {
+    if (currentQuestion === shuffledQuestions.length - 1) {
       showResult();
     } else {
       currentQuestion++;
@@ -192,7 +206,7 @@ const questions = [
     quizContainer.style.display = "none";
     resultContainer.style.display = "block";
   
-    const percentage = (score / questions.length) * 100;
+    const percentage = (score / shuffledQuestions.length) * 100;
     let message = "";
   
     if (percentage >= 80) {
@@ -206,5 +220,19 @@ const questions = [
     }
   
     resultElement.textContent = message;
-    scoreElement.textContent = `Your Score: ${score} / ${questions.length}`;
+    scoreElement.textContent = `Your Score: ${score} / ${shuffledQuestions.length}`;
+  
+    resetButton.style.display = "block";
+  }
+  
+  function resetQuiz() {
+    currentQuestion = 0;
+    score = 0;
+    shuffledQuestions = [];
+    resultContainer.style.display = "none";
+    startQuiz();
+  
+    // Clear answer feedback
+    const feedback = document.getElementById("feedback");
+    feedback.textContent = "";
   }

@@ -5,8 +5,35 @@
     padding: 0;
     font-family: 'Outfit', sans-serif;
 }
+
+body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+
 .container {
-    max-width: 75vw;
-    margin: 0 auto;
-    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    min-height: 100%;
+    padding-top: 100px;
+}
+
+.content {
+    flex: 1;
+}
+
+.form-check-input[type="radio"] {
+    border-color: #000000;
+  }
+
+.footer {
+    padding: 10px;
+    margin: auto;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    background-color: #F1F1F1;
+    text-align: center;
 }
