@@ -1,104 +1,134 @@
 const questions = [
   {
     question: "Who is the author of the famous novel 'To Kill a Mockingbird'?",
-    options: ["Harper Lee", "F. Scott Fitzgerald", "J.D. Salinger", "Ernest Hemingway"],
-    answer: 0
+    options: [
+      "Harper Lee",
+      "F. Scott Fitzgerald",
+      "J.D. Salinger",
+      "Ernest Hemingway",
+    ],
+    answer: 0,
   },
   {
     question: "What is the largest planet in our solar system?",
     options: ["Mercury", "Venus", "Jupiter", "Saturn"],
-    answer: 2
+    answer: 2,
   },
   {
     question: "Which country is known as the Land of the Rising Sun?",
     options: ["China", "South Korea", "Japan", "Thailand"],
-    answer: 2
+    answer: 2,
   },
   {
     question: "Who painted the Mona Lisa?",
-    options: ["Vincent van Gogh", "Pablo Picasso", "Leonardo da Vinci", "Michelangelo"],
-    answer: 2
+    options: [
+      "Vincent van Gogh",
+      "Pablo Picasso",
+      "Leonardo da Vinci",
+      "Michelangelo",
+    ],
+    answer: 2,
   },
   {
     question: "What is the chemical symbol for gold?",
     options: ["Ag", "Hg", "Au", "Cu"],
-    answer: 2
+    answer: 2,
   },
   {
     question: "Which country is famous for the Taj Mahal?",
     options: ["India", "Egypt", "Turkey", "Italy"],
-    answer: 0
+    answer: 0,
   },
   {
     question: "What is the capital city of France?",
     options: ["Rome", "Berlin", "Paris", "Madrid"],
-    answer: 2
+    answer: 2,
   },
   {
     question: "Who is the Greek god of the sea?",
     options: ["Zeus", "Poseidon", "Apollo", "Hermes"],
-    answer: 1
+    answer: 1,
   },
   {
     question: "In which year did World War II end?",
     options: ["1939", "1941", "1943", "1945"],
-    answer: 3
+    answer: 3,
   },
   {
     question: "What is the national animal of Canada?",
     options: ["Beaver", "Moose", "Polar bear", "Bald eagle"],
-    answer: 0
+    answer: 0,
   },
   {
     question: "Who wrote the play Romeo and Juliet?",
-    options: ["William Shakespeare", "Charles Dickens", "Jane Austen", "Mark Twain"],
-    answer: 0
+    options: [
+      "William Shakespeare",
+      "Charles Dickens",
+      "Jane Austen",
+      "Mark Twain",
+    ],
+    answer: 0,
   },
   {
     question: "What is the highest mountain in the world?",
     options: ["Mount Everest", "K2", "Mount Kilimanjaro", "Mount Fuji"],
-    answer: 0
+    answer: 0,
   },
   {
     question: "Which continent is known as the 'Dark Continent'?",
     options: ["Asia", "Africa", "Europe", "Australia"],
-    answer: 1
+    answer: 1,
   },
   {
     question: "What is the chemical symbol for iron?",
     options: ["Fe", "Ir", "In", "Sn"],
-    answer: 0
+    answer: 0,
   },
   {
     question: "Who was the first person to step foot on the moon?",
-    options: ["Neil Armstrong", "Buzz Aldrin", "Yuri Gagarin", "John F. Kennedy"],
-    answer: 0
+    options: [
+      "Neil Armstrong",
+      "Buzz Aldrin",
+      "Yuri Gagarin",
+      "John F. Kennedy",
+    ],
+    answer: 0,
   },
   {
     question: "What is the capital city of Brazil?",
     options: ["Brasília", "Rio de Janeiro", "São Paulo", "Buenos Aires"],
-    answer: 0
+    answer: 0,
   },
   {
     question: "Who is the creator of the theory of relativity?",
-    options: ["Isaac Newton", "Albert Einstein", "Galileo Galilei", "Stephen Hawking"],
-    answer: 1
+    options: [
+      "Isaac Newton",
+      "Albert Einstein",
+      "Galileo Galilei",
+      "Stephen Hawking",
+    ],
+    answer: 1,
   },
   {
     question: "In which city is the famous Colosseum located?",
     options: ["Athens", "Rome", "Paris", "London"],
-    answer: 1
+    answer: 1,
   },
   {
     question: "What is the largest ocean in the world?",
-    options: ["Atlantic Ocean", "Indian Ocean", "Arctic Ocean", "Pacific Ocean"],
-    answer: 3
+    options: [
+      "Atlantic Ocean",
+      "Indian Ocean",
+      "Arctic Ocean",
+      "Pacific Ocean",
+    ],
+    answer: 3,
   },
   {
     question: "Who is the current Prime Minister of the United Kingdom?",
     options: ["Theresa May", "David Cameron", "Boris Johnson", "Tony Blair"],
-    answer: 2
-  }
+    answer: 2,
+  },
 ];
 
 function shuffle(array) {
@@ -122,6 +152,8 @@ const gradeElement = document.getElementById("grade");
 const nextButton = document.getElementById("next-button");
 const startButton = document.getElementById("start-button");
 const resetButton = document.getElementById("reset-button");
+const triesCountElement = document.getElementById("tries-count");
+const triesElement = document.getElementById("tries");
 
 function startQuiz() {
   startButton.style.display = "none";
@@ -161,6 +193,9 @@ function showQuestion() {
   if (currentQuestion === shuffledQuestions.length - 1) {
     nextButton.textContent = "Submit";
   }
+
+  triesCountElement.textContent = question.tries;
+  triesElement.style.display = "block";
 }
 
 function enableNextButton() {
@@ -180,13 +215,14 @@ function nextQuestion() {
     showAnswerFeedback(true);
   } else {
     showAnswerFeedback(false, question.options[question.answer]);
+    question.tries++;
   }
 
   if (currentQuestion === shuffledQuestions.length - 1) {
     showResult();
   } else {
     currentQuestion++;
-    
+
     showQuestion();
   }
 }
@@ -229,7 +265,8 @@ function showResult() {
 function resetQuiz() {
   currentQuestion = 0;
   score = 0;
-  shuffledQuestions.forEach(question => {
+  shuffledQuestions.forEach((question) => {
+    question.tries = 1;
   });
   resultContainer.style.display = "none";
   startQuiz();
